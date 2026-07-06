@@ -1,4 +1,4 @@
-name: ✔️ Fullstack III - CI Pipeline
+name: ✔️ Fullstack III - Fullstack CI Pipeline
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  # 🍃 TRABAJO: Compilar y verificar el Backend (Spring Boot / Maven)
+  # 🍃 TRABAJO 1: Compilar el Backend (Spring Boot / Maven)
   backend-validation:
     runs-on: ubuntu-latest
     steps:
@@ -21,8 +21,33 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: ⚙️ Compilar y Ejecutar Tests (Maven)
+      - name: ⚙️ Compilar y Ejecutar Tests Backend
         run: |
           cd api-core-service
-          # mvn clean test compila el código y corre el archivo ItemServiceTest.java automaticamente
           mvn clean test
+
+  # ⚛️ TRABAJO 2: Validar el Frontend (Node.js / React)
+  frontend-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: 🟢 Configurar Node.js (Versión LTS 22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 📦 Instalar Dependencias y Validar Frontend
+        run: |
+          # REEMPLAZA "frontend" POR EL NOMBRE EXACTO DE TU CARPETA DE FRONTEND
+          cd frontend 
+          npm install
+          
+          # Ejecuta los tests de Jest si existen configurados
+          if npm run | grep -q "test"; then
+            npm test -- --coverage --watchAll=false
+          else
+            echo "Asegurando compilación del frontend..."
+            npm run build --if-present
+          fi
