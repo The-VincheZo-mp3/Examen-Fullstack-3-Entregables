@@ -1,14 +1,28 @@
-# 🎓 Examen Transversal - Desarrollo FullStack III
-**Sede:** Alameda  
-**Docente:** Rodrigo Chacón  
-**Integrantes:** Vicente Sánchez - Felipe Cáceres  
+# 🚀 API Core Service - Duoc UC (Sede Alameda)
 
-## 🚀 Proyecto: api-core-service (Spring Boot)
-Este repositorio contiene el microservicio de la aplicación Core desarrollado en Java 17 con Spring Boot y Maven, junto con toda la documentación, informe técnico y presentación de la entrega final.
+Backend principal desarrollado en **Spring Boot** para la gestión y sincronización de inventario (`Items`). Este microservicio centraliza las operaciones del negocio y expone una API REST limpia y estructurada bajo buenas prácticas de desarrollo.
 
-## 🛠️ Integración Continua (CI)
-El proyecto cuenta con un pipeline automatizado en **GitHub Actions** que se ejecuta con cada `push` en las ramas `develop` o `main`. El pipeline realiza las siguientes tareas:
-* Clonar el repositorio.
-* Configurar el entorno con Java 17 (Temurin).
-* Compilar el código fuente del microservicio.
-* Ejecutar las pruebas unitarias automáticas con Maven (`mvn test`).
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+* **Java 17** (Eclipse Adoptium / Hotspot)
+* **Spring Boot 3.2.3**
+    * Spring Web (Arquitectura REST)
+* **Apache Tomcat 10.1** (Servidor embebido)
+* **Maven** (Gestor de dependencias y construcción)
+
+---
+
+## 📦 Estructura del Proyecto
+
+El proyecto sigue una arquitectura limpia basada en paquetes para separar las responsabilidades:
+
+```text
+cl.duoc.alameda.core
+├── CoreApplication.java       # Clase principal (Punto de entrada)
+├── controller                  # Capa de controladores (Endpoints expuestos)
+│   └── ItemController.java
+├── model                       # Capa de entidades/modelos de datos
+│   └── Item.java
+└── service                     # (Opcional) Capa de lógica de negocio
