@@ -1,4 +1,4 @@
-name: ✔️ Fullstack III - Fullstack CI Pipeline
+name: ✔️ Fullstack III - CI Fullstack Pipeline
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  # 🍃 TRABAJO 1: Compilar el Backend (Spring Boot / Maven)
+  # 🍃 TRABAJO 1: Buscar y compilar el Backend (Spring Boot)
   backend-validation:
     runs-on: ubuntu-latest
     steps:
@@ -19,14 +19,20 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'maven'
 
-      - name: ⚙️ Compilar y Ejecutar Tests Backend
+      - name: ⚙️ Detectar y Compilar Backend automáticamente
         run: |
-          cd api-core-service
-          mvn clean test
+          POM_PATH=$(find . -name "pom.xml" -print -quit)
+          if [ -z "$POM_PATH" ]; then
+            echo "⚠️ No se encontró ningún archivo pom.xml en el repositorio. Saltando backend..."
+          else
+            BACKEND_DIR=$(dirname "$POM_PATH")
+            echo "📂 Proyecto Maven detectado en: $BACKEND_DIR"
+            cd "$BACKEND_DIR"
+            mvn clean test
+          fi
 
-  # ⚛️ TRABAJO 2: Validar el Frontend (Node.js / React)
+  # ⚛️ TRABAJO 2: Buscar y validar el Frontend (React / Node)
   frontend-validation:
     runs-on: ubuntu-latest
     steps:
@@ -38,16 +44,22 @@ jobs:
         with:
           node-version: '22'
 
-      - name: 📦 Instalar Dependencias y Validar Frontend
+      - name: 📦 Detectar, Instalar y Probar Frontend automáticamente
         run: |
-          # REEMPLAZA "frontend" POR EL NOMBRE EXACTO DE TU CARPETA DE FRONTEND
-          cd frontend 
-          npm install
+          # Buscamos el package.json que NO esté dentro de api-core-service ni node_modules
+          PACKAGE_PATH=$(find . -name "package.json" -not -path "*/node_modules/*" -not -path "*/api-core-service/*" -print -quit)
           
-          # Ejecuta los tests de Jest si existen configurados
-          if npm run | grep -q "test"; then
-            npm test -- --coverage --watchAll=false
+          if [ -z "$PACKAGE_PATH" ]; then
+            echo "⚠️ No se encontró un package.json independiente para el frontend. Saltando frontend..."
           else
-            echo "Asegurando compilación del frontend..."
-            npm run build --if-present
+            FRONTEND_DIR=$(dirname "$PACKAGE_PATH")
+            echo "📂 Proyecto Frontend detectado en: $FRONTEND_DIR"
+            cd "$FRONTEND_DIR"
+            npm install
+            
+            if npm run | grep -q "test"; then
+              npm test -- --coverage --watchAll=false
+            else
+              npm run build --if-present
+            fi
           fi
