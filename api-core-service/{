@@ -1,1 +1,0 @@
-        assertThrows(ResourceNotFoundException.class, () - itemService.findById(99L); });
