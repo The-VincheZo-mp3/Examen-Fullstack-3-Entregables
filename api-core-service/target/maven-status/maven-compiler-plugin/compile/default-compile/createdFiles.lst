@@ -1,0 +1,7 @@
+cl\duoc\alameda\core\service\ItemService.class
+cl\duoc\alameda\core\exception\ResourceNotFoundException.class
+cl\duoc\alameda\core\CoreApplication.class
+cl\duoc\alameda\core\controller\ItemController.class
+cl\duoc\alameda\core\Item.class
+cl\duoc\alameda\core\ItemController.class
+cl\duoc\alameda\core\model\Item.class
