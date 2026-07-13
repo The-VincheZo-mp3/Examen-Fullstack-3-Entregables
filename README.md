@@ -1,79 +1,45 @@
-# 🚀 API Core Service - Duoc UC (Sede Alameda)
+# 📦 API Core Service & Frontend - Duoc UC
 
-Backend principal desarrollado en **Spring Boot** para la gestión y sincronización de inventario (`Items`). Este microservicio centraliza las operaciones del negocio y expone una API REST limpia y estructurada bajo buenas prácticas de desarrollo.
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-* **Java 17** (Eclipse Adoptium / Hotspot)
-* **Spring Boot 3.2.3**
-    * Spring Web (Arquitectura REST)
-* **Apache Tomcat 10.1** (Servidor embebido)
-* **Maven** (Gestor de dependencias y construcción)
+Este proyecto corresponde al **Examen Transversal de Fullstack III**. La solución ha sido completamente rediseñada bajo una **arquitectura desacoplada**, separando las responsabilidades del servidor de datos y la interfaz de usuario en dos capas independientes y autónomas.
 
 ---
 
-## 📦 Estructura del Proyecto
+## 👥 Integrantes
+* **Vicente Sánchez**
+* **Felipe Cáceres**
 
-El proyecto sigue una arquitectura limpia basada en paquetes para separar las responsabilidades:
+**Profesor:** Rodrigo Chacón  
+**Sede:** Alameda
+
+---
+
+## 📁 Estructura del Proyecto Fullstack
+
+El repositorio se organiza de la siguiente manera para facilitar el despliegue independiente:
 
 ```text
-cl.duoc.alameda.core
-├── CoreApplication.java       # Clase principal (Punto de entrada)
-├── controller                  # Capa de controladores (Endpoints expuestos)
-│   └── ItemController.java
-├── model                       # Capa de entidades/modelos de datos
-│   └── Item.java
-└── service                     # (Opcional) Capa de lógica de negocio
+api-core-service/
+├── backend/               # Servidor de Datos (API REST)
+│   ├── src/               # Código fuente en Java 17 / Spring Boot
+│   └── pom.xml            # Dependencias y configuración de Maven
+└── Frontend/              # Capa de Presentación (Interfaz Web)
+    └── index.html         # SPA Interactiva con Bootstrap y Fetch API
+⚙️ Componentes de la Arquitectura
+☕ 1. Backend (API REST)
+Tecnología: Java 17, Spring Boot, Maven.
 
-* **Instalación y Ejecución Local* ** 
-Prerrequisitos
-Tener instalado Java 17.
+Función: Expone los endpoints REST para la gestión del inventario en formato JSON.
 
-Tener instalado Maven.
+Puerto local: http://localhost:8080/items
 
-Pasos para iniciar el servicio
-Clona este repositorio o entra a la carpeta raíz del proyecto mediante tu terminal:
+🎨 2. Frontend (Single Page Application)
+Tecnología: HTML5, CSS3 Simétrico, JavaScript (Modern Fetch API) y Bootstrap 5.
 
-Bash
-cd api-core-service/api-core-service
-Realiza una limpieza profunda del proyecto y compila las dependencias:
+Función: Interfaz de usuario limpia y adaptativa que consume los datos de la API en tiempo real sin recargar la página. Cuenta con validaciones interactivas en el formulario para asegurar la calidad de los datos ingresados.
 
-Bash
-mvn clean compile
-Levanta el microservicio:
+🚀 Integración Continua (CI/CD)
+El proyecto cuenta con un pipeline automatizado en GitHub Actions (ci-cd.yml) que se ejecuta en cada push o pull request a las ramas main y develop. Este pipeline realiza dos etapas críticas:
 
-Bash
-mvn spring-boot:run
-El servidor iniciará exitosamente en el puerto 8080 de tu máquina local: http://localhost:8080
+backend-validation: Configura Java 17 y compila/testea el backend con Maven de forma automatizada.
 
-🔌 Endpoints Disponibles
-Obtener todos los ítems
-URL: /api/v1/items
-
-Método HTTP: GET
-
-Headers: Content-Type: application/json
-
-Respuesta Exitosa (200 OK):
-
-JSON
-[
-  {
-    "id": 1,
-    "sku": "PROD-001",
-    "name": "Componente Backend Primario",
-    "stock": 50
-  },
-  {
-    "id": 2,
-    "sku": "PROD-002",
-    "name": "Modulo Integracion Frontend",
-    "stock": 35
-  }
-]
-⚙️ Características Clave
-CORS Habilitado: Configurado con @CrossOrigin(origins = "*") para permitir la integración directa con aplicaciones Frontend (Angular, React, Vue, etc.).
-
-Estructura Limpia: Cumple con la separación de Beans exigida por el framework para evitar colisiones de dependencias.
+frontend-validation: Escanea la arquitectura, comprueba la existencia de la interfaz web y valida que el archivo index.html mantenga una estructura semántica correcta.
