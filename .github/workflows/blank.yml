@@ -7,6 +7,7 @@ on:
     branches: [ main, develop ]
 
 jobs:
+  # 📦 ETAPA 1: Validación y Compilación del Backend (Java/Maven)
   backend-validation:
     runs-on: ubuntu-latest
     steps:
@@ -29,4 +30,26 @@ jobs:
             echo "📂 Proyecto Maven detectado en: $BACKEND_DIR"
             cd "$BACKEND_DIR"
             mvn clean test
+          fi
+
+  # 🎨 ETAPA 2: Validación de la estructura del Frontend
+  frontend-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: 🔍 Validar existencia de la interfaz Web
+        run: |
+          # Busca el index.html sin importar si la carpeta se llama Frontend o frontend
+          HTML_PATH=$(find . -iname "index.html" -print -quit)
+          if [ -z "$HTML_PATH" ]; then
+            echo "❌ ERROR: No se encontró el archivo index.html en la arquitectura."
+            exit 1
+          else
+            echo "✅ ¡Frontend detectado con éxito en: $HTML_PATH!"
+            echo "📄 Validando estructura HTML básica..."
+            # Revisa de forma simple que el archivo tenga las etiquetas clave
+            grep -q "<html" "$HTML_PATH" && grep -q "<head" "$HTML_PATH" && grep -q "<body" "$HTML_PATH"
+            echo "🚀 Interfaz web validada correctamente y lista para despliegue."
           fi
