@@ -1,1 +1,0 @@
-                .orElseThrow(() - ResourceNotFoundException("Item no encontrado con ID: " + id));
